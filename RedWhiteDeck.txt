@@ -1,0 +1,43 @@
+#Card names	Colorless cost	White cost	Red cost	Type
+@land cards,White,Red	14	10	
+Anex and Cymede	1	1	1	Creature	
+Daily Regimen	0	1	0	Enchantment	
+Griffin Guide	2	1	0	Enchantment	
+Moment of Heroism	1	1	0	Instant	
+Sigardian Priest	1	1	0	Creature	
+Flameshadow Conjuring	3	0	1	Enchantment	
+Sun titan	4	2	0	Creature	
+Pyre Hound	3	0	1	Creature	
+Thalia Heretic Cathar	2	1	0	Creature	
+Choking Restraints	2	1	0	Enchantment	
+Miraculous Recovery	4	1	0	Instant	
+Murder Investigation	1	1	0	Enchantment	
+Bonds of Faith	1	1	0	Enchantment	
+Ride Down	0	1	1	instant	
+Kamahl Pit Fighter	4	0	2	Creature	
+Silverstrike	3	1	0	instant	
+Choking Restraints	2	1	0	Enchantment	
+Pay No Heed	0	1	0	instant	
+Armory Gaurd	3	1	0	Creature
+Armory Gaurd	3	1	0	Creature
+Battle Mastery	2	1	0	Enchantment	
+Righteousness	0	1	0	Instant	
+Winds of Rath	3	2	0	Sorcery	
+Nahiri"s Machinations	1	1	0	Enchantment
+Nahiri"s Machinations	1	1	0	Enchantment
+Nobilis of War	0	5	5	Creature	Red or White
+Stun Sniper	0	1	1	Creature
+Stun Sniper	0	1	1	Creature
+Pyrokinesis	4	0	2	instant	
+Gustclock Sentinel	2	2	0	Creature	
+Ironclad Slayer	2	1	0	creature
+Ironclad Slayer	2	1	0	creature
+Felidar Cub	1	1	0	creature	
+Thalia's Lancers	3	2	0	creature
+Thalia's Lancers	3	2	0	creature
+Figure of destiny	0	1	1	creature	red or white
+Goblin Glory Chaser	0	0	1	creature	
+Faithbearer Paladin	4	1	0	creature	
+Give No Ground	3	1	0	instant	
+Truefire Palidin	0	1	1	creature
+Vildin-Pack Outcast	4	0	1	creature	
