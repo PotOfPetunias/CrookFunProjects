@@ -1,3 +1,22 @@
+'''
+Author: Lowell Crook
+Date: 4/16/2017
+Description:
+This is a fun little project that I did to try and determine the best
+way to shuffle a Magic the Gathering deck. I this game you build a deck
+of cards that include mana cards and non-mana cards. When playing the game, you
+want you deck to be sufficiently shuffled so that you do not have all your
+mana cards clumped together.
+
+In this project, I first made some functions that imitated shuffling methods
+that real people can do with a deck of cards. Then I made a way to measure the relative
+clumpyness of the shuffled deck. Then comes the fun part, I chose a random number of 
+times to repeat these shuffle methods and a random order to do them. Then, I 
+measure the clumpyness of the resulting deck. After that I apply a little bit of 
+randomization to the order and repetition of the shuffling and test again. With this 
+method I can find a good shuffling method without just testing every possible 
+method. In other words I can at least find a local maximum best shuffling method.
+'''
 import random
 
 #deap??
@@ -76,7 +95,19 @@ def flipFlopDrop(deck):
 def basicCut(deck):
     fh, lh = cut(deck)
     return lh + fh
-    
+
+def alexCut(deck):
+    numOfParts = random.randint(3,6)
+    maxPartSize = int(len(deck)/numOfParts)
+    newDeck = []
+    leftover = deck
+    for i in range(numOfParts-1):
+        partSize = random.randint(7,maxPartSize)
+        newDeck = leftover[:partSize] + newDeck
+        leftover = leftover[partSize:]
+    newDeck = leftover + newDeck
+    return newDeck
+  
 
 #****************************** Scoring Functions ********************************
 def clumpyness(deck, show = True):
@@ -111,36 +142,74 @@ def score(clumps):
         score += (i+1)*clumps[i]
     return score
     
-#****************************** Evolutionary Functions ******************************
-def testShuffleMethod(iMatrix, times):
-    print("do evolution")
+#****************************** Evolutionary Utility Functions ******************************
+def testShuffleMethod(deck, instMatrix, times):
+    avgScore = 0
+    for i in range(times):
+        for instruct in instMatrix:
+            if instruct == 0:
+                deck = fancyCut(deck)
+            elif instruct == 1:
+                deck = shuffle(deck)
+            elif instruct == 2:
+                deck = flipFlopDrop(deck)
+            elif instruct == 3:
+                deck = basicCut(deck)
+            elif instruct == 4:
+                deck = alexCut(deck)
+        clumps = clumpyness(deck, show = False)
+        avgScore += score(clumps)
+    return avgScore/times
 
-   
+def randInstruction(size):
+    instMatrix = [0 for i in range(size)]
+    for i in range(size):
+        instMatrix[i] = random.randint(0,4)
+    return instMatrix
+
+def applyJitter(instMatrix):
+    index1 = random.randint(0,len(instMatrix)-1)
+    index2 = random.randint(0,len(instMatrix)-1)
+    instMatrix[index1], instMatrix[index2] = instMatrix[index2], instMatrix[index1]
+    i = random.randint(0,len(instMatrix)-1)
+    if instMatrix[i] <= 0:
+        instMatrix[i] += random.randint(0,1)
+    elif instMatrix[i] >= 4:
+        instMatrix[i] += random.randint(-1,0)
+    else:
+        instMatrix[i] += random.randint(-1,1)
+    return instMatrix
+
 #****************************** Program start *******************************
 
-deck = [1 for i in range(24)] + [0 for i in range(36)] 
-#print(deck)
+deck = [0 for i in range(15+6)] + [1 for i in range(24)] + [0 for i in range(15)] 
+generations = 100
+repeatTest = 100
+numOfShuffles = 5
 
-times = 100
-totes = [0 for i in range(24)]
-avgScore = 0
-for i in range(times):
-    deck_s = deck
-    #random.shuffle(deck)
-    deck_s = flipFlopDrop(deck_s)
-    #deck_s = shuffle(deck_s)
-    #deck_s = fancyCut(deck_s)
-    counts = clumpyness(deck_s, show = False)
-    for i in range(len(counts)):
-        totes[i] += counts[i]
-    avgScore += score(counts)
+inst = randInstruction(numOfShuffles)
+#inst = [1,1,1,1,1,1,1,1,1,1]
+print("Starting individual ", inst)
+orignalScore = testShuffleMethod(deck, inst, repeatTest)
 
-for i in range(len(totes)):
-    totes[i] = totes[i]/times
-#for i in range(len(totes)): print(totes[i], "\t", i+1, " clumps")
-avgScore = avgScore/times
-print(avgScore)
+for i in range(generations):
+    instNew = applyJitter(inst)
+    scoreOld = testShuffleMethod(deck, inst, repeatTest)
+    scoreNew = testShuffleMethod(deck, instNew, repeatTest)
+    if scoreNew < scoreOld:
+        inst = instNew
+        #print("Better ", inst)
 
+print("Winning individual ", inst)
+afterScore = testShuffleMethod(deck, inst, repeatTest)
+print("Old: ", orignalScore, "\nNew: ", afterScore)
+
+
+##scores = []
+##for num in range(20):
+##    inst = [1 for i in range(num)]
+##    scores.append(testShuffleMethod(deck, inst, repeatTest))
+##print(scores)
 
 
 
