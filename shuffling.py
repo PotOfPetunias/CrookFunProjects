@@ -97,17 +97,23 @@ def clumpyness(deck, show = True):
                     print(clumps[i], " clump of ", i+1)
                 else:
                     print(clumps[i], " clumps of ", i+1)
-    return clumps
+    return clumps   
 
-def score(clumps):
+def expoScore(clumps):
     score = 0
     for i in range(len(clumps)):
         score += (2*clumps[i])**i+1
     return score
+
+def score(clumps):
+    score = 0
+    for i in range(3,len(clumps)):
+        score += (i+1)*clumps[i]
+    return score
     
 #****************************** Evolutionary Functions ******************************
 def testShuffleMethod(iMatrix, times):
-    
+    print("do evolution")
 
    
 #****************************** Program start *******************************
@@ -115,13 +121,13 @@ def testShuffleMethod(iMatrix, times):
 deck = [1 for i in range(24)] + [0 for i in range(36)] 
 #print(deck)
 
-times = 10000
+times = 100
 totes = [0 for i in range(24)]
 avgScore = 0
 for i in range(times):
     deck_s = deck
-    random.shuffle(deck)
-    #deck_s = flipFlopDrop(deck_s)
+    #random.shuffle(deck)
+    deck_s = flipFlopDrop(deck_s)
     #deck_s = shuffle(deck_s)
     #deck_s = fancyCut(deck_s)
     counts = clumpyness(deck_s, show = False)
@@ -131,7 +137,7 @@ for i in range(times):
 
 for i in range(len(totes)):
     totes[i] = totes[i]/times
-for i in range(len(totes)): print(totes[i], "\t", i+1, " clumps")
+#for i in range(len(totes)): print(totes[i], "\t", i+1, " clumps")
 avgScore = avgScore/times
 print(avgScore)
 
