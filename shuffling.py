@@ -18,7 +18,7 @@ method I can find a good shuffling method without just testing every possible
 method. In other words I can at least find a local maximum best shuffling method.
 '''
 import random
-
+import matplotlib.pyplot as plt
 #deap??
 
 non_land = 36
@@ -192,18 +192,25 @@ inst = randInstruction(numOfShuffles)
 print("Starting individual ", inst)
 orignalScore = testShuffleMethod(deck, inst, repeatTest)
 
+plot = [orignalScore]
+
 for i in range(generations):
     instNew = applyJitter(inst)
     scoreOld = testShuffleMethod(deck, inst, repeatTest)
     scoreNew = testShuffleMethod(deck, instNew, repeatTest)
     if scoreNew < scoreOld:
         inst = instNew
+        plot.append(scoreNew)
         #print("Better ", inst)
 
 print("Winning individual ", inst)
 afterScore = testShuffleMethod(deck, inst, repeatTest)
 print("Old: ", orignalScore, "\nNew: ", afterScore)
 
+plot.append(afterScore)
+
+plt.plot(plot)
+plt.show()
 
 ##scores = []
 ##for num in range(20):
