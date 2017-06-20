@@ -1,0 +1,18 @@
+Entry#,Date,Time,Vehicle,Adults,Seniors,Children,Dogs,Overnight,Camping,Cabin,Pass,Notes
+0,6/19/2017,17:32:42,Passenger Vehicle,2,0,0,3,FALSE,FALSE,FALSE,No Pass
+1,6/19/2017,17:35:14,Passenger Vehicle,1,0,0,0,FALSE,FALSE,FALSE,Individual Pass
+2,6/19/2017,17:35:19,Passenger Vehicle,1,0,0,0,FALSE,FALSE,FALSE,Individual Pass
+3,6/19/2017,18:11:37,na,0,0,0,0,na,na,na,na,Turn Around
+4,6/19/2017,18:11:42,Passenger Vehicle,1,0,1,0,False,False,False,No Pass
+5,6/19/2017,18:11:46,Passenger Vehicle,2,0,0,0,False,False,False,No Pass
+6,6/19/2017,18:14:6,na,0,0,0,0,na,na,na,na,Turn Around
+7,6/19/2017,18:17:40,na,0,0,0,0,na,na,na,na,Turn Around
+8,6/19/2017,18:21:19,na,0,0,0,0,na,na,na,na,Turn Around
+9,6/19/2017,18:40:48,na,0,0,0,0,na,na,na,na,Turn Around
+10,6/19/2017,18:58:18,Passenger Vehicle,1,0,0,0,False,False,False,Family Pass
+11,6/19/2017,18:59:9,Passenger Vehicle,1,0,0,0,False,False,False,Family Pass
+12,6/19/2017,19:7:19,Passenger Vehicle,2,0,0,0,False,False,False,No Pass,Going to VBAS
+13,6/19/2017,19:22:13,na,0,0,0,0,na,na,na,na,Visitor Re-Entry
+14,6/19/2017,19:25:30,Passenger Vehicle,2,0,0,0,False,False,False,No Pass,Going to VBAS
+15,6/19/2017,19:27:6,na,0,0,0,0,na,na,na,na,Visitor Re-Entry
+16,6/19/2017,19:37:21,Passenger Vehicle,0,1,0,0,False,False,False,No Pass
