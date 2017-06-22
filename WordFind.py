@@ -14,14 +14,14 @@ import traceback
 puzz = []
 words = []
 
-class Word:
-    x = -1
-    y = -1
-    word = ''
-    def __init__(self,x,y,word):
-        self.x = x
-        self.y = y
-        self.word = word
+##class Word:
+##    x = -1
+##    y = -1
+##    word = ''
+##    def __init__(self,x,y,word):
+##        self.x = x
+##        self.y = y
+##        self.word = word
 
 class Direction():
     north = 1
