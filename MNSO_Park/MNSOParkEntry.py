@@ -1,9 +1,11 @@
 import time
+import calendar
 import os
 from collections import deque
 from datetime import datetime
 from shutil import copyfile
 
+os.chdir('C:\\Users\\lhcro\\Documents\\(8)Summer2017\\MNSOdata')
 fileName = 'MNSOData.csv'
 visitorNumber = 0
 
@@ -24,7 +26,7 @@ def helpMenu():
           '\t without recording any bad data\n',
           'end   - this command exits the testing mode\n',
           'help  - displays this help menu\n',
-          'undo  - NOT OPERATIONAL\n\n',
+          'undo  - erases the last entry (max of 5 of erases) \n\n',
           '**** Quick Entry Commands **** (used for entering commen cases)\n',
           't - (stands for Turn Around) record a potential visitor turning around\n',
           'p - (stands for Park Employee) record an Employee coming into the park\n',
@@ -153,16 +155,37 @@ class Entry:
     
     def display(self):
         print(self.time, ' ', self.date)
-        print(self.vehicle, ', ', self.adults, ' Adults, ',
-            self.seniors, ' Seniors, ',
-            self.kids, ' kids, ',
-            self.dogs, ' dogs',
-            '\novernight:', self.overnight,
-            ', camping:', self.camping,
-            ', cabin:', self.cabin,
-            ', parkPass:', self.parkPass,
-            ', \ndestination:', self.destination,
-            ', notes:', self.notes)
+        if self.vehicle != 'na':
+            print(self.vehicle)
+        if self.adults != 0:
+            print(self.adults, ' Adults')
+        if self.seniors != 0:
+            print(self.seniors, ' Seniors')
+        if self.kids != 0:
+            print(self.kids, ' kids')
+        if self.dogs != 0:
+            print(self.dogs, ' dogs')
+        if self.camping:
+            print('Overnight guest in campground')
+        if self.cabin:
+            print('Overnight guest in cabin')
+        if self.parkPass != 'na' and self.parkPass != 'No Pass':
+            print('With ', self.parkPass)
+        if self.destination != 'na':
+            print('destination: ', self.destination)
+        if self.notes != '':
+            print('notes:', self.notes)
+            
+##        print(self.vehicle, ', ', self.adults, ' Adults, ',
+##            self.seniors, ' Seniors, ',
+##            self.kids, ' kids, ',
+##            self.dogs, ' dogs',
+##            '\novernight:', self.overnight,
+##            ', camping:', self.camping,
+##            ', cabin:', self.cabin,
+##            ', parkPass:', self.parkPass,
+##            ', \ndestination:', self.destination,
+##            ', notes:', self.notes)
 
 def contains(code, thing):
     i = code.find(thing)
@@ -208,7 +231,33 @@ def record(entry):
     file.close()
 
 def manageBackups():
-    copyfile(fileName, 'SPbackup.csv')
+    files = os.listdir()
+    print(files)
+    backups = []
+    doneDailyBackup = False
+    
+    t = datetime.now()
+    date = str(t.month) +"-"+ str(t.day) +"-"+ str(t.year)
+    bName = 'SPbackup' + date + '.csv'
+    
+    for f in files:
+        if contains(f, 'SPbackup'):
+            backups.append(f)
+        if f == bName:
+            doneDailyBackup = True
+            
+    if not doneDailyBackup:
+        print('Doing daily backup')
+        if len(backups) < 5:
+            copyfile(fileName, bName)
+        else:
+            print('Backup not done becuase there are already 5!!!!!')
+            ##print(time.time() - os.path.getmtime('SPbackup.csv'))
+            ##print(time.time())
+            ##copyfile(fileName, 'SPbackup.csv')
+    else:
+        print('Daily backup already completed')
+    
 
     
 #************************* Program Start *************************
@@ -221,7 +270,7 @@ startingNum = visitorNumber
 print('If you need help type \"help\"')
 buff = deque([])
 while True:
-    guestCode = input("Entry: ")
+    guestCode = input("\n=========================\nEntry: ")
     guestCode = guestCode.lower()
     guestCode = guestCode.strip()
     if guestCode == "close":
@@ -238,9 +287,12 @@ while True:
         print('Leaving test mode')
     
     elif guestCode == "undo":
-        d = buff.pop()
-        print('Will not record entry: ')
-        d.display()
+        try:
+            d = buff.pop()
+            print('Will not record entry: ')
+            d.display()
+        except IndexError:
+            print('Max undo reached!')
     
     else:
         x = Entry(guestCode)
@@ -258,6 +310,8 @@ print('recording last entries')
 while len(buff) > 0:
     record(buff.popleft())
 print(visitorNumber - startingNum, ' Entries total')
+
+
 
 #open("Filename.csv", "a")
 ##def getLastEntry():
