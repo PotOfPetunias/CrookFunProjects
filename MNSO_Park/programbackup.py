@@ -4,6 +4,8 @@ import os
 from collections import deque
 from datetime import datetime
 from shutil import copyfile
+import numpy as np
+import matplotlib.pyplot as plt
 
 os.chdir('C:\\Users\\lhcro\\Documents\\(8)Summer2017\\MNSOdata')
 fileName = 'MNSOData.csv'
@@ -184,7 +186,7 @@ class Entry:
             self.parkPass = 'No Pass'
 
     def decodeOverNight(self, code):
-        if not contains(code, 'u'):
+        if not (contains(code, 'u') or contains(code, 'v')):
             self.camping = contains(code, 'g')
             self.cabin = contains(code, 'c')
             self.overnight = self.camping or self.cabin
@@ -298,10 +300,19 @@ def manageBackups():
         if len(backups) < 5:
             copyfile(fileName, bName)
         else:
-            print('Backup not done becuase there are already 5!!!!!')
-            ##print(time.time() - os.path.getmtime('SPbackup.csv'))
-            ##print(time.time())
-            ##copyfile(fileName, 'SPbackup.csv')
+            ##print('Backup not done becuase there are already 5!!!!!')
+            minTime = os.path.getmtime(backups[0])
+            index = -1
+            for i in range(len(backups)):
+                checkTime = os.path.getmtime(backups[i])
+                if checkTime <= minTime:
+                    index = i
+                    minTime = checkTime
+            if index >= 0:
+                copyfile(fileName, backups[index])
+                os.rename(backups[index], bName)
+            else:
+                print('ERROR! Somehow there was no minimum time for backups')
     else:
         print('Daily backup already completed')
 
@@ -312,14 +323,16 @@ def getDateFromLine(line):
         return ''
 
 def getTimeFromLine(line):
-    return 'hh:mm:ss'
+    try:
+        return line.split(',')[2]
+    except IndexError:
+        return ''
 
 def today():
-    global fileName
     t = datetime.now()
     review(str(t.month), str(t.day), str(t.year))
 
-def review(month, day, year):
+def review(month, day, year, show = True):
     global fileName
     date = str(month) +"/"+ str(day) +"/"+ str(year)
     entries = []
@@ -340,9 +353,40 @@ def review(month, day, year):
         x = Entry()
         x.create(entries[i])
         entries[i] = x
-        
-    print('======== Summary of ', date, ' ========')
-    showTallies(entries)
+    if show: 
+        print('======== Summary of ', date, ' ========')
+        showTallies(entries)
+    else:
+        return entries
+
+def graphToday():
+    t = datetime.now()
+    graph(str(t.month), str(t.day), str(t.year))
+
+def graph(month, day, year):
+    entries = review(month, day, year, show = False)
+    aList = []
+    sList = []
+    kList = []
+    dList = []
+    for e in entries:
+        aList.append(e.adults)
+        sList.append(e.seniors)
+        kList.append(e.kids)
+        dList.append(e.dogs)
+    ind = np.arange(len(aList))
+    p1 = plt.bar(ind, aList)
+    p2 = plt.bar(ind, sList, bottom=aList)
+    p3 = plt.bar(ind, kList, bottom=sList)
+    p4 = plt.bar(ind, dList, bottom=kList)
+
+    plt.ylabel('Number of Guests')
+    plt.xlabel('Time')
+    plt.title('Types of guests over time')
+    plt.legend((p1[0], p2[0], p3[0], p4[0]), ('adults', 'seniors', 'kids', 'dogs'))
+    
+    plt.show()
+    
 
 def showTallies(entryObjList):  
     aSum = 0
@@ -471,6 +515,8 @@ def showTallies(entryObjList):
         if dCampers != 0: print(dCampers, ' dogs')
 
 def start():
+    print('If you need help type \"help\"')
+    
     manageBackups()
 
     testMode = False
@@ -522,7 +568,6 @@ def start():
     
 #************************* Program Start *************************
 
-print('If you need help type \"help\"')
 start()
 
 

@@ -365,29 +365,66 @@ def graphToday():
 
 def graph(month, day, year):
     entries = review(month, day, year, show = False)
-    aList = []
-    sList = []
-    kList = []
-    dList = []
-    for e in entries:
-        aList.append(e.adults)
-        sList.append(e.seniors)
-        kList.append(e.kids)
-        dList.append(e.dogs)
-    ind = np.arange(len(aList))
-    p1 = plt.bar(ind, aList)
-    p2 = plt.bar(ind, sList, bottom=aList)
-    p3 = plt.bar(ind, kList, bottom=sList)
-    p4 = plt.bar(ind, dList, bottom=kList)
+    blocks = createTimeBlocks(entries)
+    aSums = []
+    sSums = []
+    kSums = []
+    dSums = []
+    lineupk = []
+    lineupd = []
+    for b in blocks:
+        aSums.append(0)
+        sSums.append(0)
+        kSums.append(0)
+        dSums.append(0)
+        lineupk.append(0)
+        lineupd.append(0)
 
+    xAxLabels = []
+    begin = int(entries[0].time.split(':')[0])
+    end = int(entries[-1].time.split(':')[0])
+    xAxLabels = list(range(begin, end+1))
+    for i in range(len(blocks)):
+        for e in blocks[i]:
+            aSums[i] += e.adults
+            sSums[i] += e.seniors
+            kSums[i] += e.kids
+            dSums[i] += e.dogs
+            lineupk[i] += (e.adults + e.seniors)
+            lineupd[i] += (e.adults + e.seniors + e.kids)
+    
+    ind = np.arange(len(blocks))
+        
+    p1 = plt.bar(ind, aSums)
+    p2 = plt.bar(ind, sSums, bottom=aSums)
+    p3 = plt.bar(ind, kSums, bottom=lineupk)
+    p4 = plt.bar(ind, dSums, bottom=lineupd)
+
+    title = 'Visitors on ' + str(month) + '/' + str(day) + '/' + str(year)
+    plt.title(title)
     plt.ylabel('Number of Guests')
-    plt.xlabel('Time')
-    plt.title('Types of guests over time')
-    plt.legend((p1[0], p2[0], p3[0], p4[0]), ('adults', 'seniors', 'kids', 'dogs'))
+    plt.xlabel('Time (in 24 hour format)')
+    plt.xticks(ind, xAxLabels)
+    plt.legend((p4[0], p3[0], p2[0], p1[0]), ('dogs', 'kids', 'seniors', 'adults'))
     
     plt.show()
     
-
+def createTimeBlocks(entries):
+    begin = entries[0].time
+    end = entries[-1].time
+    begin = begin.split(':')
+    end = end.split(':')
+    for i in range(len(begin)):
+        begin[i] = int(begin[i])
+        end[i] = int(end[i])
+    index = list(range(begin[0], end[0]+1))
+    blocks = []
+    for i in index:
+        blocks.append([])    
+    for i in range(len(entries)):
+        blocks[int(entries[i].time.split(':')[0]) - begin[0]].append(entries[i])
+    return blocks
+    
 def showTallies(entryObjList):  
     aSum = 0
     sSum = 0
@@ -515,13 +552,13 @@ def showTallies(entryObjList):
         if dCampers != 0: print(dCampers, ' dogs')
 
 def start():
+    global visitorNumber
     print('If you need help type \"help\"')
     
     manageBackups()
 
     testMode = False
     visitorNumber = getLastEntryNum()
-    startingNum = visitorNumber
 
     buff = deque([])
     while True:
@@ -564,17 +601,12 @@ def start():
     print('recording last entries')
     while len(buff) > 0:
         record(buff.popleft())
+    print('We are on entrie ', visitorNumber)
 
     
 #************************* Program Start *************************
 
-start()
+autoStart = input('Press enter to start: ')
+if autoStart != 'n':
+    start()
 
-
-#open("Filename.csv", "a")
-##def getLastEntryNum():
-##    file = open('MNSOData.csv',"r")
-##    lines = file.readlines()
-##    lastLine = lines[-1]
-##    entryNum = lastLine[:lastLine.index(',')]
-##    return int(entryNum)
