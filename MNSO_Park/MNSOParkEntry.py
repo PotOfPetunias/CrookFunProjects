@@ -7,7 +7,7 @@ from shutil import copyfile
 import numpy as np
 import matplotlib.pyplot as plt
 
-os.chdir('C:\\Users\\lhcro\\Documents\\(8)Summer2017\\MNSOdata')
+os.chdir('C:\\Users\\lhcro\\Google Drive\\Summer2017\\MNSOdata')
 fileName = 'MNSOData.csv'
 visitorNumber = 0
 
