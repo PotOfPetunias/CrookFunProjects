@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 os.chdir('C:\\Users\\lhcro\\Google Drive\\Summer2017\\MNSOdata')
 fileName = 'MNSOData.csv'
 visitorNumber = 0
+tempCommandNote = ''
 
 def helpMenu():
     print('****************************Help***********************************\n',
@@ -37,7 +38,7 @@ def helpMenu():
           'dl or ld - (stands for Deleivery to Lodge)\n\n',
           '*********** Symbols *************\n',
           'The first four symbols (a,s,k,and d) can be augmented by placing a \n',
-          '\tone digit number in front of them this tells the system \"how many\" \n',
+          '\tnumber in front of them this tells the system \"how many\" \n',
           'a - (stands for Adult)\n',
           's - (stands for Senior)\n',
           'k - (stands for Kid)\n',
@@ -54,17 +55,27 @@ def helpMenu():
           'l - (stands for lodge event)\n',
           'e - (stands for Event) Going to a pavillion event\n',
           'v - (stands for VBAS) because v was used for visiting a person cannot come \n\tto visit and go to vbas\n',
-          'h - (stands for Huntsville High) HHS cross country team\n',
           'o - (stands for Office or Store) going just to the store and back\n',
-          'j - (stands for Japanese) means they are volenteering at tea garden\n',
+          'j - (stands for Japanese) means they are volenteering and can represent and \n\tvolenteer entering the park\n',
           'r - (stands for Restroom)\n\n',
+          'z - (stands for z) this is a custom note that is persistant only through \n\tthe program being open\n',
           'fp- (stands for Family Pass)\n',
           'sp- (stands for Senior Pass)\n',
           'ip- (stands for Individual Pass)\n\n',
-          'n - (stands for No cash)\n\n',
+          'n - (stands for No cash)\n',
+          'x - (stands for Did not pay)\n\n',
           '; - if you want to add a note for a special case then use this symbol and\n',
-          '\t everything after it will go into the notes section\n')
-          
+          '\t everything after it will go into the notes section\n\n'
+          '*********** Useful Functions ************\n',
+          'start() restarts the program after you have typed \"close\"\n',
+          'today() review today\n',
+          'review(day,month,year) counts up and shows totals for that day\n',
+          'graphToday() make bar graphs for today\n',
+          'graph(day,month,year) make bar graphs representing the attendance to the \n\tpark that day\n',)
+
+##****************************************************************************************************************
+##                                  Data Recording
+##****************************************************************************************************************
 class Entry:
     date = 0
     time = 0
@@ -126,6 +137,8 @@ class Entry:
             self.vehicle = 'RV'
         elif contains(code, 't'):
             self.vehicle = 'Trailer Vehicle'
+        elif contains(code, 'bb'):
+            self.vehicle = 'Bus'
         elif contains(code, 'b'):
             self.vehicle = 'Bike'
         elif contains(code, 'm'):
@@ -139,35 +152,34 @@ class Entry:
         if contains(code, 'l'):
             self.destination = 'Lodge event'
             if contains(code, 'u'):
-                self.notes = 'Looking at the Lodge'
+                self.notes = 'Looking at the event facilities'
+                self.destination = 'Lodge'
                 
         elif contains(code, 'e'):
             self.destination = 'Event at a pavilion'
             if contains(code, 'u'):
-                self.notes = 'Looking at the pavilion'
+                self.notes = 'Looking at the event facilities'
+                self.destination = 'Pavilion'
                 
         elif contains(code, 'g'):
             self.destination = 'Campground'
             if contains(code, 'u'):
-                self.notes = 'Looking at the campground'
-            elif contains(code, 'v'):
+                self.notes = 'Looking at the overnight facilities'
+            elif contains(code, 'v') and (not self.vehicle == 'RV'):
                 self.notes = 'Visiting guests in the campground'
                 
         elif contains(code, 'c'):
             self.destination = 'Cabins'
             if contains(code, 'u'):
-                self.notes = 'Looking at the Cabins'
-            elif contains(code, 'v'):
+                self.notes = 'Looking at the overnight facilities'
+            elif contains(code, 'v') and (not self.vehicle == 'RV'):
                 self.notes = 'Visiting guests at the cabins'
                 
-        elif contains(code, 'u'):
-            self.notes = 'just want to drive through really quick'
+        
         elif contains(code, 'o'):
             self.destination = 'Just to the store'
         elif contains(code, 'j'):
-            self.destination = 'Japanese garden to volenteer'
-        elif contains(code, 'h'):
-            self.notes = 'HHS cross country team'
+            self.destination = 'Volenteer'
         elif contains(code, 'v') and self.vehicle != 'RV':
             self.destination = 'VBAS'
         elif contains(code, 'r') and self.vehicle != 'RV':
@@ -186,7 +198,7 @@ class Entry:
             self.parkPass = 'No Pass'
 
     def decodeOverNight(self, code):
-        if not (contains(code, 'u') or contains(code, 'v')):
+        if not (contains(code, 'u') or (contains(code, 'v') and self.vehicle != 'RV')):
             self.camping = contains(code, 'g')
             self.cabin = contains(code, 'c')
             self.overnight = self.camping or self.cabin
@@ -208,8 +220,14 @@ class Entry:
             self.notes = 'Deleivery'
             self.destination = 'Lodge event'
             return False
+        elif contains(code, 'u'):
+            self.notes = 'just want to drive through really quick'
         elif contains(code, 'n'):
             self.notes = 'No Cash'
+        elif contains(code, 'x'):
+            self.notes = 'Did not pay'
+        elif contains(code, 'z'):
+            self.notes = getCustomTempCommand()
         return True
     
     def display(self):
@@ -234,7 +252,7 @@ class Entry:
             print('destination: ', self.destination)
         if self.notes != '':
             print('notes:', self.notes)
-## End Class ##
+## ********************** End of Entry class ***************************
 
 def contains(code, thing):
     i = code.find(thing)
@@ -247,40 +265,44 @@ def howMany(code, index):
         return 0
     if index == 0:
         return 1
-    try:
-        return int(code[index - 1])
-    except ValueError:
-        return 1
+
+    for i in range(index):
+        try:
+            return int(code[i:index])
+        except ValueError:
+            continue
+    return 1
+
+def getCustomTempCommand(): #********************** getCustomTempCommand ***************************
+    global tempCommandNote
+    if tempCommandNote == '':
+        tempCommandNote = input("Please enter what you want the \ntemporary command to represent: ")
+    return tempCommandNote      
+
+def resetZ():
+    global tempCommandNote
+    tempCommandNote = ''
 
 def record(entry):
     global visitorNumber
     global fileName
     visitorNumber += 1
-    file = open(fileName,"a")
-    line = [str(visitorNumber), ',', entry.date, ',',entry.time,',',
-            entry.vehicle, ',',str(entry.adults), ',',str(entry.seniors),',',
-            str(entry.kids), ',',str(entry.dogs), ',',str(entry.overnight),',',
-            str(entry.camping), ',',str(entry.cabin), ',',entry.parkPass,',',
-            entry.destination, ',',entry.notes, '\n']
-    
-    file.writelines(line)
-    file.close()
-
-def getLastEntryNum():
-    global fileName 
-    file = open(fileName,"r")
-    buff = ''
-    line = file.readline() 
     while True:
-        if line == '':
+        try:
+            file = open(fileName,"a")
+            line = [str(visitorNumber), ',', entry.date, ',',entry.time,',',
+                    entry.vehicle, ',',str(entry.adults), ',',str(entry.seniors),',',
+                    str(entry.kids), ',',str(entry.dogs), ',',str(entry.overnight),',',
+                    str(entry.camping), ',',str(entry.cabin), ',',entry.parkPass,',',
+                    entry.destination, ',',entry.notes, '\n']
+            
+            file.writelines(line)
+            file.close()
             break
-        buff = line
-        line = file.readline()
-    entryNum = buff[:buff.index(',')]
-    file.close()
-    return int(entryNum)
+        except PermissionError:
+            input('ERROR!!!\nThe file is curently open in another program and cannot be written to\n Please close it and then press enter\nERROR!!!\n')
 
-def manageBackups():
+def manageBackups(): #********************** ManageBackups ***************************
     files = os.listdir()
     backups = []
     doneDailyBackup = False
@@ -316,6 +338,25 @@ def manageBackups():
     else:
         print('Daily backup already completed')
 
+
+##****************************************************************************************************************
+##                                  Data Reading
+##****************************************************************************************************************
+
+def getLastEntryNum(): #********************** getLastEntryNum ***************************
+    global fileName 
+    file = open(fileName,"r")
+    buff = ''
+    line = file.readline() 
+    while True:
+        if line == '':
+            break
+        buff = line
+        line = file.readline()
+    entryNum = buff[:buff.index(',')]
+    file.close()
+    return int(entryNum)
+
 def getDateFromLine(line):
     try:
         return line.split(',')[1]
@@ -328,11 +369,15 @@ def getTimeFromLine(line):
     except IndexError:
         return ''
 
+##****************************************************************************************************************
+##                                      Tally System
+##****************************************************************************************************************
+
 def today():
     t = datetime.now()
     review(str(t.month), str(t.day), str(t.year))
 
-def review(month, day, year, show = True):
+def review(month, day, year, show = True): #********************** Review ***************************
     global fileName
     date = str(month) +"/"+ str(day) +"/"+ str(year)
     entries = []
@@ -359,72 +404,6 @@ def review(month, day, year, show = True):
     else:
         return entries
 
-def graphToday():
-    t = datetime.now()
-    graph(str(t.month), str(t.day), str(t.year))
-
-def graph(month, day, year):
-    entries = review(month, day, year, show = False)
-    blocks = createTimeBlocks(entries)
-    aSums = []
-    sSums = []
-    kSums = []
-    dSums = []
-    lineupk = []
-    lineupd = []
-    for b in blocks:
-        aSums.append(0)
-        sSums.append(0)
-        kSums.append(0)
-        dSums.append(0)
-        lineupk.append(0)
-        lineupd.append(0)
-
-    xAxLabels = []
-    begin = int(entries[0].time.split(':')[0])
-    end = int(entries[-1].time.split(':')[0])
-    xAxLabels = list(range(begin, end+1))
-    for i in range(len(blocks)):
-        for e in blocks[i]:
-            aSums[i] += e.adults
-            sSums[i] += e.seniors
-            kSums[i] += e.kids
-            dSums[i] += e.dogs
-            lineupk[i] += (e.adults + e.seniors)
-            lineupd[i] += (e.adults + e.seniors + e.kids)
-    
-    ind = np.arange(len(blocks))
-        
-    p1 = plt.bar(ind, aSums)
-    p2 = plt.bar(ind, sSums, bottom=aSums)
-    p3 = plt.bar(ind, kSums, bottom=lineupk)
-    p4 = plt.bar(ind, dSums, bottom=lineupd)
-
-    title = 'Visitors on ' + str(month) + '/' + str(day) + '/' + str(year)
-    plt.title(title)
-    plt.ylabel('Number of Guests')
-    plt.xlabel('Time (in 24 hour format)')
-    plt.xticks(ind, xAxLabels)
-    plt.legend((p4[0], p3[0], p2[0], p1[0]), ('dogs', 'kids', 'seniors', 'adults'))
-    
-    plt.show()
-    
-def createTimeBlocks(entries):
-    begin = entries[0].time
-    end = entries[-1].time
-    begin = begin.split(':')
-    end = end.split(':')
-    for i in range(len(begin)):
-        begin[i] = int(begin[i])
-        end[i] = int(end[i])
-    index = list(range(begin[0], end[0]+1))
-    blocks = []
-    for i in index:
-        blocks.append([])    
-    for i in range(len(entries)):
-        blocks[int(entries[i].time.split(':')[0]) - begin[0]].append(entries[i])
-    return blocks
-    
 def showTallies(entryObjList):  
     aSum = 0
     sSum = 0
@@ -550,6 +529,220 @@ def showTallies(entryObjList):
         if sCampers != 0: print(sCampers, ' seniors')
         if kCampers != 0: print(kCampers, ' kids')
         if dCampers != 0: print(dCampers, ' dogs')
+        
+##****************************************************************************************************************
+##                                      Data Visualization
+##****************************************************************************************************************
+
+def graphToday(halfhour = True): #********************** GraphToday ***************************
+    t = datetime.now()
+    if halfhour:
+        graph(str(t.month), str(t.day), str(t.year), halfhour = True)
+    else:
+        graph(str(t.month), str(t.day), str(t.year))
+
+def graph(month, day, year, halfhour = True): #********************** Graph ***************************
+    entries = review(month, day, year, show = False)
+    blocks = createTimeBlocks(entries, halfhour)
+    #************** Labes for x axsis **************
+    xAxLabels = []
+    begin = int(entries[0].time.split(':')[0])
+    end = int(entries[-1].time.split(':')[0])
+    if halfhour:
+        for i in range(begin, end+1):
+            xAxLabels.append(str(i))
+            xAxLabels.append(str(i + 0.5))
+    else:
+        xAxLabels = list(range(begin, end+1))
+    dateForTitle = str(month) + '/' + str(day) + '/' + str(year)
+    vehicleTitle = 'Vehicle Breakdown for ' + dateForTitle
+    aSKDTitle = 'Demographic Breakdown for ' + dateForTitle
+    visitorTitle = 'Visitor Motivation Breakdown for ' + dateForTitle
+    
+    graphVehicle(xAxLabels, blocks, vehicleTitle, halfhour)
+    graphASKD(xAxLabels, blocks, aSKDTitle, halfhour)
+    graphVisitorMotivation(xAxLabels, blocks, visitorTitle, halfhour)
+
+def graphVisitorMotivation(xAxLabels, blocks, title, halfhour):
+    #********************** Plot Vehicle breakdown ***************************
+    normalSums = []
+    lodgeSums = []
+    pavilionSums = []
+    campingSums = []
+    cabinSums = []
+    miscSums = []
+    
+    lineupPav = []
+    lineupCamp = []
+    lineupCabin = []
+    lineupMisc = []
+    
+    for b in blocks:
+        normalSums.append(0)
+        lodgeSums.append(0)
+        pavilionSums.append(0)
+        campingSums.append(0)
+        cabinSums.append(0)
+        miscSums.append(0)
+        lineupPav.append(0)
+        lineupCamp.append(0)
+        lineupCabin.append(0)
+        lineupMisc.append(0)
+    
+    #************** Find sums **************
+    for i in range(len(blocks)):
+        for e in blocks[i]:
+            if e.destination == 'Lodge event':
+                lodgeSums[i] += e.adults + e.seniors + e.kids
+            elif e.destination == 'Event at a pavilion':
+                pavilionSums[i] += e.adults + e.seniors + e.kids
+            elif e.destination == 'Campground':
+                campingSums[i] += e.adults + e.seniors + e.kids
+            elif e.destination == 'Cabins':
+                cabinSums[i] += e.adults + e.seniors + e.kids
+            elif e.destination != 'na':
+                miscSums[i] += e.adults + e.seniors + e.kids
+            else:
+                normalSums[i] += e.adults + e.seniors + e.kids
+                
+        lineupPav[i] += lodgeSums[i] + normalSums[i]
+        lineupCamp[i] += lineupPav[i] + pavilionSums[i]
+        lineupCabin[i] += lineupCamp[i] + campingSums[i]
+        lineupMisc[i] += lineupCabin[i] + cabinSums[i]
+    
+    #************** Create bars **************
+    ind = np.arange(len(blocks))
+    pltVisitorMotivation = plt.figure(3)  
+    p1 = plt.bar(ind, normalSums)
+    p2 = plt.bar(ind, lodgeSums, bottom=normalSums)
+    p3 = plt.bar(ind, pavilionSums, bottom=lineupPav)
+    p4 = plt.bar(ind, campingSums, bottom=lineupCamp)
+    p5 = plt.bar(ind, cabinSums, bottom=lineupCabin,color='#ffff00')
+    p6 = plt.bar(ind, miscSums, bottom=lineupMisc)
+
+    #************** Format and show **************
+    plt.title(title)
+    plt.ylabel('Number of Visitors')
+    plt.xlabel('Time (in 24 hour format)')
+    plt.xticks(ind, xAxLabels)
+    plt.legend((p6[0], p5[0], p4[0], p3[0], p2[0], p1[0]), ('Other Guests', 'Cabin Guests', 'Camping Guests',
+                                                            'Pavilion Guests', 'Lodge Guests', 'Normal Guests'))
+    pltVisitorMotivation.show()
+def graphVehicle(xAxLabels, blocks, title, halfhour):
+    #********************** Plot Vehicle breakdown ***************************
+    otherSums = []
+    visitorReEntrySums = []
+    turnAroundSums = []
+    lineupTurn = []
+    for b in blocks:
+        otherSums.append(0)
+        visitorReEntrySums.append(0)
+        turnAroundSums.append(0)
+        lineupTurn.append(0)
+    #************** Find sums **************
+    for i in range(len(blocks)):
+        for e in blocks[i]:
+            if e.notes == 'Turn Around':
+                turnAroundSums[i] += 1
+            elif e.notes == 'Visitor Re-Entry':
+                visitorReEntrySums[i] += 1
+            else:
+                otherSums[i] += 1
+        lineupTurn[i] = otherSums[i] + visitorReEntrySums[i]
+    
+    #************** Create bars **************
+    ind = np.arange(len(blocks))
+    pltVehicle = plt.figure(2)  
+    p1 = plt.bar(ind, otherSums)
+    p2 = plt.bar(ind, visitorReEntrySums, bottom=otherSums)
+    p3 = plt.bar(ind, turnAroundSums, bottom=lineupTurn)
+
+    #************** Format and show **************
+    plt.title(title)
+    plt.ylabel('Number of Vehicles')
+    plt.xlabel('Time (in 24 hour format)')
+    plt.xticks(ind, xAxLabels)
+    plt.legend((p3[0], p2[0], p1[0]), ('Turn around', 'Visitor Re-Entry', 'All Other Vehicles'))
+    
+    pltVehicle.show()
+
+def graphASKD(xAxLabels, blocks, title, halfhour):
+    #********************** Plot Demographic detail ***************************
+    aSums = []
+    sSums = []
+    kSums = []
+    dSums = []
+    lineupk = []
+    lineupd = []
+    for b in blocks:
+        aSums.append(0)
+        sSums.append(0)
+        kSums.append(0)
+        dSums.append(0)
+        lineupk.append(0)
+        lineupd.append(0)
+
+    #************** Find sums **************
+    for i in range(len(blocks)):
+        for e in blocks[i]:
+            aSums[i] += e.adults
+            sSums[i] += e.seniors
+            kSums[i] += e.kids
+            dSums[i] += e.dogs
+            lineupk[i] += (e.adults + e.seniors)
+            lineupd[i] += (e.adults + e.seniors + e.kids)
+
+    #************** Create bars **************
+    ind = np.arange(len(blocks))
+    pltASKD = plt.figure(1)  
+    p1 = plt.bar(ind, aSums)
+    p2 = plt.bar(ind, sSums, bottom=aSums)
+    p3 = plt.bar(ind, kSums, bottom=lineupk)
+    p4 = plt.bar(ind, dSums, bottom=lineupd)
+
+    #************** Format and show **************
+    plt.title(title)
+    plt.ylabel('Number of Guests')
+    plt.xlabel('Time (in 24 hour format)')
+    plt.xticks(ind, xAxLabels)
+    plt.legend((p4[0], p3[0], p2[0], p1[0]), ('dogs', 'kids', 'seniors', 'adults'))
+    
+    pltASKD.show()
+   
+def createTimeBlocks(entries, halfhour):
+    begin = entries[0].time
+    end = entries[-1].time
+    begin = begin.split(':')
+    end = end.split(':')
+    
+    for i in range(len(begin)):
+        begin[i] = int(begin[i])
+        end[i] = int(end[i])
+    index = list(range(begin[0], end[0]+1))
+    blocks = []
+    for i in index:
+        blocks.append([])    
+    for i in range(len(entries)):
+        blocks[int(entries[i].time.split(':')[0]) - begin[0]].append(entries[i])
+    if halfhour:
+        halfblocks = []
+        for b in blocks:
+            fhalf = []
+            lhalf = []
+            for e in b:
+                if int(e.time.split(':')[1]) < 30:
+                    fhalf.append(e)
+                else:
+                    lhalf.append(e)
+            halfblocks.append(fhalf)
+            halfblocks.append(lhalf)      
+        return halfblocks
+    else:
+        return blocks
+    
+##****************************************************************************************************************
+##                                          Main
+##****************************************************************************************************************
 
 def start():
     global visitorNumber

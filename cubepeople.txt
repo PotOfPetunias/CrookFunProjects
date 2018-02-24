@@ -1,0 +1,153 @@
+Adam Moore											9	
+Alec Miller											8	
+Alex Agranov											8	
+Alex Bosche											2	
+Amos Johnson											4	
+Aussie Greene											4	
+Avery Kosmicki											6	
+Bear Dobbins											3	
+Benjamin DePew											1	
+Benjamin Finley Lumpkin											3	
+Chance Johnson											8	
+Charles Wycoff											3	
+Clay Moore											9	
+Cody Lilly											3	
+Cody Petitt											6	
+Cole Kuhlers											4	
+Colin Crosskno											9	
+Collin Wankel											3	
+Corey William Griffin											4	
+Daniel Lawrence Vergara Ellis											4	
+Daniel Porter											5	
+David Ludwig											8	
+Davis Brewster											4	
+Dylan Miller											6	
+Eli Parker											6	
+Ethan Fuentes											7	
+Ethan Willis											4	
+George Whittington											3	
+Graham De Gruiter											6	
+Henry Tarkowski											4	
+Hunter Jones											8	
+Ian Gilham											4	
+Jack Donatelle											3	
+Jacob Ambrose											9	
+Jacob Dennerlein											3	
+Jacob Fanikos											1	
+Jacob Keener											4	
+JaMarcus Butler											4	
+Jason Naidu											1	
+Joel Branham											5	
+John Reed											4	
+Jonah Leslie											2	
+Jordan Hauck											2	
+Jordan Pitts											7	
+Joseph Hicks											2	
+Joshua Townsend											3	
+Justin Mallari											7	
+Kassi Ingram											1	
+Katie Hull											9	
+Kevin Min											9	
+Kieran Dizon											6	
+Kingston Neal											2	
+Kylen Baker											2	
+Lowell Crook											3	
+Luke Garrett											4	
+Mark Arnett											3	
+Matthew Gillin											2	
+Max Zhang											4	
+Micah Grawey											4	
+Micah Morrison											8	
+Minsoo Park											6	
+Nathan Campbell											4	
+Nathan Hunter											6	
+Nicky Steingraber											4	
+Owen Morrison											4	
+Phillip Lane											3	
+Ramone Jackson											4	
+Raymond Goslow											9	
+RJ Gohn											6	
+Robert Grawey											7	
+Ryan Hof											2	
+Simon Guterman											2	
+Sumanth Chandrupatla											3	
+Tai Anh Phan											2	
+Thomas Kohann											8	
+Towery McNeil											6	
+Tyler Hudson											6	
+Ulric Williams											5	
+Walter Spickler											6	
+Will Hauck											2	
+William St. Clair											7	
+Yucheng Ma										4	
+Zachary White
+
+1	Katie Hull	8.62		10.09			9.86	13.03	9.90	8.62	10.52	
+2	Kieran Dizon	9.70		10.61			11.25	10.09	9.70	14.00	10.49	
+3	Tommy Cherry	9.72		10.63			9.72	14.57	9.77	9.80	12.32	
+4	Jared Stinson	9.28		10.89			9.32	12.54	12.16	11.18	9.28	
+5	Raymond Goslow	10.50		11.19			11.65	10.50	10.96	12.14	10.96	
+6	Sean Hartman	11.43		12.22			12.86	12.75	12.30	11.43	11.62	
+7	Jacob Ambrose	11.16		13.48			13.14	13.46	19.02	13.85	11.16	
+8	Noah Joiner	13.09		14.39			13.09	15.35	13.55	14.50	15.11	
+9	Daniel Mullen	13.94		14.64			18.84	15.48	14.46	13.98	13.94	
+10	Sean Skinner	13.85		15.15			16.99	15.88	13.85	15.26	14.30	
+11	David Beugnon	13.67		15.17			15.34	13.67	19.80	15.68	14.50	
+12	Christopher Cabrera	13.65		15.20			15.92	13.65	14.91	18.30	14.78	
+13	Jared Balassaitis	13.40		15.72			15.84	17.62	16.14	15.18	13.40	
+14	Jayson Frascatore	14.39		15.92			17.17	15.73	14.39	14.86	18.73	
+15	Bowen Powers	13.64		16.22			13.64	39.78	14.65	15.03	18.97	
+16	Owen Chen	14.93		16.26			22.95	15.68	14.93	16.07	17.02	
+17	Thomas Bryan	14.73		16.36			15.36	17.84	15.87	18.72	14.73	
+18	Jacob Hossler	15.36		17.67			17.27	18.87	16.88	24.14	15.36	
+19	Amy Wen	17.33		20.56			22.74	18.60	20.33	55.46	17.33	
+20	Noah McCarver	17.15		21.31			23.74	25.27	22.80	17.15	17.38	
+21	Clay Moore	18.76		21.39			21.35	18.76	20.66	38.25	22.16	
+22	Lowell Crook	18.10		21.83			29.33	18.10	20.31	23.94	21.25	
+23	Cooper Gates	19.63		21.89			24.55	20.77	20.34	19.63	DNF	
+24	Josh Mullins	21.35		22.82			24.14	21.35	22.89	23.51	22.07	
+25	Branden Thrasher	19.24		22.98			DNF	23.45	24.12	21.37	19.24	
+26	Tony Cofield Jr.	17.78		23.19			25.92	24.62	17.78	23.05	21.91	
+27	Jhonathan Herrera	19.93		23.62			26.10	24.29	20.46	29.75	19.93	
+28	Joe Crawford	20.55		23.64			25.67	22.91	20.55	22.34	27.80	
+29	Max Dyment	19.46		23.71			23.11	19.46	33.16	26.67	21.34	
+30	Ian Gilham	21.81		24.07			25.96	28.99	21.81	21.85	24.40	
+31	Will Mathews	19.16		24.50			24.06	32.49	23.77	19.16	25.66	
+32	Nate Hoffmaster	23.98		24.53			24.28	24.56	27.68	24.76	23.98	
+33	Paul Roberts	21.94		25.09			24.83	24.40	26.03	28.77	21.94	
+34	Joseph Hicks	24.26		25.58			26.06	24.26	25.80	24.88	31.36	
+35	Ian Beljour	25.31		26.56			25.97	27.23	30.74	25.31	26.47	
+36	Jack Rader	18.90		27.73			39.18	28.24	28.84	26.12	18.90	
+37	Hudson O'Donnell	22.83		28.90			27.05	34.10	29.34	30.32	22.83	
+38	Joshua Cherian	24.54		29.39			24.54	29.64	36.68	24.73	33.79	
+39	Steven V. Parisi Jr.	23.06		30.83			37.22	46.05	32.12	23.15	23.06	
+40	Scott Rader	27.77		31.48			32.74	27.77	30.37	33.19	31.32	
+41	Evan McCarthy	27.15		32.07			33.51	27.15	33.56	29.13	34.21	
+42	Robert Moore	29.16		32.14			35.62	29.16	46.57	31.28	29.53	
+43	Harrison Hughs	21.57		32.50			35.49	30.98	33.51	33.00	21.57	
+44	Jack Donatelle	28.04		33.29			34.77	36.52	28.04	28.58	37.00	
+45	Harrison Michael Oberg	20.33		33.78			43.48	29.56	37.25	20.33	34.54	
+46	Jack Strawn	29.01		35.06			32.94	35.94	37.03	29.01	36.30	
+47	Charles Votin	28.03		35.19			28.03	39.38	44.68	34.45	31.75	
+48	Eian Phillips	26.25		35.34			26.25	33.65	35.24	37.13	39.20	
+49	Jacob Keener	28.42		35.50			33.65	40.96	35.06	28.42	37.79	
+50	Cari Goslow	29.86		36.07			38.31	38.98	31.66	38.23	29.86	
+51	Devan Bush	28.95		36.66			37.87	54.16	36.53	28.95	35.57	
+52	Rhiannon Murray	30.34		37.49			38.80	40.01	38.89	34.77	30.34	
+53	Smith Langstaff	39.92		43.56			43.54	57.52	39.92	46.39	40.76	
+54	Dylan Girouard	33.78		44.56			38.78	47.74	33.78	47.17	1:04.72	
+55	Mingye Mark He	41.25		47.45			1:00.18	48.49	44.93	41.25	48.92	
+56	Amin Hernandez	44.57		47.88			52.21	44.57	45.70	45.74	59.69	
+57	David Mathews	43.36		48.01			53.70	43.83	43.36	50.34	49.85	
+58	John Robert Harris	39.24		50.97			40.80	DNF	1:02.71	49.39	39.24	
+59	Knox Hall	39.97		55.59			39.97	1:13.98	58.49	59.40	48.89	
+60	Harry Goslow	49.90		55.62			50.00	59.84	57.01	1:03.46	49.90	
+61	Corey Pryor	53.64		1:00.17			1:10.82	1:21.58	55.46	54.23	53.64	
+62	Jeff Stinson	54.62		1:06.21			57.60	1:16.35	54.62	1:04.68	DNF	
+63	Sophia Goslow	56.83		1:07.42			1:15.23	1:06.32	1:13.78	56.83	1:02.17	
+64	Josh Mathews	51.92		1:07.48			1:15.48	1:12.97	1:12.18	51.92	57.29	
+65	Reese Bell	1:07.88		1:11.11			1:11.10	1:17.08	1:13.93	1:07.88	1:08.30	
+66	Westley Dow	1:06.78		1:13.31			1:34.70	1:06.78	1:07.21	1:07.15	1:25.58	
+67	Nikita Cherian	1:17.21		1:21.51			1:20.29	1:17.21	1:18.58	1:30.16	1:25.67	
+68	Alan Van Omen	19.62		DNF			19.62	31.24	DNF	23.78	DNF	
+69	Aaron Welch
